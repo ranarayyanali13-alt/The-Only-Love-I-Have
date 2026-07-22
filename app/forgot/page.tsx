@@ -28,11 +28,7 @@ const forgotten = [
 
 export default function ForgotPage() {
   return (
-    <PageLayout
-      chapter="Chapter Three"
-      title="Things You Might Have Forgotten"
-      subtitle="Maybe these moments faded with time... but they never left my heart."
-    >
+    <PageLayout eyebrow="Chapter Seven — Things We Forgot">
       <div className="space-y-8">
         {forgotten.map((item, index) => (
           <div
