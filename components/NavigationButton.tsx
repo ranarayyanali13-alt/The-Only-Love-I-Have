@@ -1,7 +1,7 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { usePathname, useRouter } from 'next/navigation';
 
 type NavigationButtonProps = {
   href: string;
@@ -19,19 +19,29 @@ export default function NavigationButton({
   className = '',
 }: NavigationButtonProps) {
   const router = useRouter();
+  const pathname = usePathname();
   const [isLeaving, setIsLeaving] = useState(false);
 
-  const handleNavigation = () => {
+  useEffect(() => {
+    document.body.classList.remove('page-is-leaving');
+    setIsLeaving(false);
+
+    return () => {
+      document.body.classList.remove('page-is-leaving');
+    };
+  }, [pathname]);
+
+  function handleNavigation() {
     if (isLeaving) return;
 
     setIsLeaving(true);
-
     document.body.classList.add('page-is-leaving');
 
     window.setTimeout(() => {
+      document.body.classList.remove('page-is-leaving');
       router.push(href);
-    }, 650);
-  };
+    }, 500);
+  }
 
   return (
     <button
@@ -56,15 +66,13 @@ export default function NavigationButton({
         py-4
         font-serif
         text-[15px]
-        tracking-[0.04em]
         text-white
         shadow-[0_18px_55px_rgba(0,0,0,0.35)]
         backdrop-blur-xl
         transition-all
         duration-500
         hover:-translate-y-1
-        hover:border-[#e8c978]/65
-        hover:shadow-[0_22px_70px_rgba(210,170,80,0.12)]
+        hover:border-yellow-200/60
         active:scale-[0.97]
         disabled:cursor-wait
         disabled:opacity-60
@@ -82,36 +90,16 @@ export default function NavigationButton({
           to-[#9f6c28]
           transition-transform
           duration-500
-          ease-out
           group-hover:translate-x-0
         "
       />
 
-      <span
-        className="
-          relative
-          z-10
-          flex
-          items-center
-          gap-4
-          transition-colors
-          duration-500
-          group-hover:text-black
-        "
-      >
-        {direction === 'back' && (
-          <span className="text-lg transition-transform group-hover:-translate-x-1">
-            ←
-          </span>
-        )}
+      <span className="relative z-10 flex items-center gap-4 transition-colors duration-500 group-hover:text-black">
+        {direction === 'back' && <span>←</span>}
 
         <span>{isLeaving ? loadingLabel : label}</span>
 
-        {direction === 'next' && (
-          <span className="text-lg transition-transform group-hover:translate-x-1">
-            →
-          </span>
-        )}
+        {direction === 'next' && <span>→</span>}
       </span>
     </button>
   );
