@@ -1,40 +1,22 @@
 import './globals.css';
 import type { Metadata } from 'next';
-import { Cormorant_Garamond } from 'next/font/google';
-
-const font = Cormorant_Garamond({
-  subsets: ['latin'],
-  weight: ['300', '400', '500', '600', '700'],
-});
+import type { ReactNode } from 'react';
 
 export const metadata: Metadata = {
-  title: 'All The Love I Have',
-  description: 'A story made for only one person.',
-  openGraph: {
-    images: [
-      {
-        url: 'https://bolt.new/static/og_default.png',
-      },
-    ],
-  },
-  twitter: {
-    card: 'summary_large_image',
-    images: [
-      {
-        url: 'https://bolt.new/static/og_default.png',
-      },
-    ],
-  },
+  title: 'The Only Love I Have',
+  description: 'A private story written for one special person.',
+};
+
+type RootLayoutProps = {
+  children: ReactNode;
 };
 
 export default function RootLayout({
   children,
-}: {
-  children: React.ReactNode;
-}) {
+}: RootLayoutProps) {
   return (
     <html lang="en">
-      <body className={font.className}>{children}</body>
+      <body>{children}</body>
     </html>
   );
 }
